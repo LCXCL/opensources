@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<algorithm>
+#include<string.h>
+#include<string>
+#include<stdlib.h>
+#include<iostream>
+#include<set>
+#include<math.h>
+#define MAX 1111
+#define lld long long
+const int inf = 0x3f3f3f3f;
+using namespace std;
+int ain(){
+   freopen("res.txt","w",stdout);
+    FILE * fw;
+    int cnt[100],res[100],pos;
+    string words[30][10000],menu[100];
+    string ch,tem;
+    char buf[11000];
+    memset(cnt,0,sizeof(cnt));
+    memset(res,0,sizeof(res));
+    fw = fopen("words.txt","r");
+    if(fw == NULL){
+        printf("The Words Is Not Exist\n");
+        exit(0);
+    }
+    int num = -1,len;
+    while(1){
+        fgets(buf,100,fw);
+        if(feof(fw)) break;
+        len = strlen(buf);
+        buf[len - 1] = '\0';
+        if(buf[0] == '#'){
+            num ++;
+            menu[num] = buf;
+            continue;
+        }
+        words[num][cnt[num] ++] = buf;
+    }
+    fclose(fw);
+    fw = fopen("1.txt","r");
+    if(fw == NULL) {
+        printf("Not Found");
+        exit(0);
+    }
+    while(1){
+        if(feof(fw)) break;
+        fgets(buf,10000,fw);
+        tem = buf;
+        ch.append(tem);
+    }
+    for(int i = 0;i < num;++ i){
+        for(int j = 0;j < cnt[i];++ j){
+            pos = 0;
+            while((pos = ch.find(words[i][j],pos + 1)) != ch.npos){
+                res[i] ++;
+            }
+        }
+    }
+    for(int i = 0;i < num;++ i){
+        cout << menu[i] << ':' << res[i] << endl;
+    }
+    return 0;
+}
