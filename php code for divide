@@ -1,0 +1,44 @@
+<?php    
+    $kind = array(50);
+    $words = array(50 => 1000);
+    $fw = fopen("words.txt","r");
+    if($fw == NULL){
+        echo "The Words Is Not Exist";
+        exit(0);
+    }
+    $num = -1;$i = -1;$j = 0;
+
+    while(!feof($fw)){
+        $buf = fgets($fw);
+		$buf = trim($buf);
+        if(@$buf[0] == '#'){
+            $kind[++ $i] = $buf;  
+            $j = 0; 
+            continue; 
+        }
+        $words[$i][$j ++] = $buf;
+    }
+    $num_words = $i;
+    fclose($fw);
+    $fw = fopen("1.txt","r");
+    if($fw == NULL) {
+         echo "Not Found";
+         exit(0);
+    }
+    $ch = null;
+    while(!feof($fw)){
+        $buf = fgets($fw);
+        $buf = trim($buf);
+        $ch .= $buf;
+    }
+    for($i = 0;$i <= $num_words;$i ++){
+        $count = count($words[$i]);
+        $num = 0;
+        for($j = 0;$j < $count;$j ++){
+           @ $num += substr_count($ch,$words[$i][$j]);
+        }
+        echo $kind[$i] .":".$num . '<br>';
+    }
+    echo $ch;
+?>
+
