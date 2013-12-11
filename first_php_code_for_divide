@@ -1,0 +1,47 @@
+<?php    
+    $kind = array(50);
+    $words = array(50 => 1000);
+    $fw = fopen("words.txt","r");
+    if($fw == NULL){
+        echo "The Words Is Not Exist";
+        exit(0);
+    }
+    $num = -1;$i = -1;$j = 0;
+
+    while(!feof($fw)){
+        $buf = fgets($fw);
+        if($buf[0] == '#'){
+            $kind[++ $i] = $buf;  
+            $j = 0; 
+            continue; 
+        }
+    	$buf = substr($buf,0,strlen($buf) - 2);
+        //	$buf = str_replace(array("/r/n", "/r", "/n"), "", $buf); 
+        $words[$i][$j ++] = $buf;
+    }
+    $num_words = $i;
+    fclose($fw);
+    $fw = fopen("1.txt","r");
+    if($fw == NULL) {
+         echo "Not Found";
+         exit(0);
+    }
+    $ch = null;
+    while(!feof($fw)){
+        $buf = fgets($fw);
+        $ch .= substr($buf,0,strlen($buf) - 2);
+    }
+    $ch = str_replace(array("/r/n", "/r", "/n"), "", $ch);
+    for($i = 0;$i <= $num_words;$i ++){
+        $count = count($words[$i]);
+        $num = 0;
+        for($j = 0;$j < $count;$j ++){
+            echo $words[$i][$j];
+            echo substr_count($ch, $words[$i][$j]);
+            $num += substr_count($ch,$words[$i][$j]);
+        }
+        echo $kind[$i] .":".$num . '<br>';
+    }
+    echo $ch;
+?>
+
