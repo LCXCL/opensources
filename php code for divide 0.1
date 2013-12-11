@@ -1,0 +1,51 @@
+<form action="string.php" method="post">
+Please input your article:<br>
+<textarea name = "art" rows = "10" cols = "50"/></textarea><br>
+<input type = "submit"/>
+<br>
+<?php    
+     $fw = fopen("readme.txt","r");
+    if($fw == NULL){
+         echo "The File Is Not Exist";
+        exit(0);
+    }
+    while(!feof($fw)){
+        echo fgets($fw).'<br>';
+    }
+    $kind = array(50);
+    $words = array(50 => 1000);
+    $fw = fopen("words.txt","r");
+    if($fw == NULL){
+        echo "The Words Is Not Exist";
+        exit(0);
+    }
+    $num = -1;$i = -1;$j = 0;
+
+    while(!feof($fw)){
+        $buf  = fgets($fw);
+        $buf = trim($buf);
+        if(@$buf[0] == '#'){
+             $kind[++ $i] = $buf;  
+            $j = 0; 
+            continue; 
+        }
+        $words[$i][$j ++] = $buf;
+    }
+    $num_words = $i;
+    fclose($fw);
+    $ch = null;
+    foreach($_POST as $key => $value){
+		$ch.= $value;
+	}
+    $ch = trim($ch);
+    for($i = 0;$i <= $num_words;$i ++){
+        $count = count($words[$i]);
+        $num = 0;
+        for($j = 0;$j < $count;$j ++){
+            @$num += substr_count($ch,$words[$i][$j]);
+        }
+        echo '<br>'.$kind[$i] .$num;
+    }
+    echo '<br>'. $ch;
+?>
+
